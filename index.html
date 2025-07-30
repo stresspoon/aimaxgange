@@ -27,6 +27,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
         
         .slide {
@@ -39,6 +40,7 @@
             padding: 40px;
             position: relative;
             background: #f2f1ed; /* 인쇄 시 배경색 유지 */
+            cursor: default;
         }
         
         .slide.active {
@@ -55,6 +57,7 @@
         h1, h2, h3, p, li, div[contenteditable="true"] {
             outline: 1px dashed transparent;
             transition: outline 0.2s;
+            cursor: text;
         }
         h1:hover, h2:hover, h3:hover, p:hover, li:hover, div[contenteditable="true"]:hover {
             outline: 1px dashed #ff3d00;
@@ -80,6 +83,7 @@
             display: flex;
             gap: 20px;
             z-index: 100;
+            cursor: default;
         }
         
         .nav button {
@@ -97,10 +101,6 @@
         }
         .nav button.save-btn {
             background: #007bff;
-        }
-        .nav button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
         }
 
         /* 이미지 관련 스타일 */
@@ -189,6 +189,9 @@
             body {
                 overflow: visible !important; /* 인쇄 시 스크롤 허용 */
             }
+            .presentation {
+                cursor: default;
+            }
             .slide { 
                 display: flex !important; /* 모든 슬라이드 강제 표시 */
                 flex-direction: column !important;
@@ -206,6 +209,7 @@
             }
             h1, h2, h3, p, li, div {
                 outline: none !important;
+                cursor: default !important;
             }
             .step {
                 opacity: 1 !important;
@@ -992,8 +996,6 @@
     </div>
     
     <div class="nav">
-        <button id="prevBtn" onclick="changeSlide(-1)">이전</button>
-        <button id="nextBtn" onclick="nextStep()">다음</button>
         <button id="saveBtn" class="save-btn" onclick="saveHTML()">💾 저장</button>
     </div>
     
@@ -1022,8 +1024,6 @@
             const steps = slides[currentSlide].querySelectorAll('.step');
             steps.forEach(step => step.classList.remove('show'));
             
-            document.getElementById('prevBtn').disabled = currentSlide === 0;
-            
             if (steps.length > 0) {
                 setTimeout(() => {
                     steps[0].classList.add('show');
@@ -1031,7 +1031,6 @@
                 }, 100);
             }
             
-            // 이미지 삭제 버튼 추가
             addDeleteButtons();
         }
         
@@ -1055,8 +1054,6 @@
             if (e.key === 'ArrowRight') nextStep();
             if (e.key === 'ArrowLeft') changeSlide(-1);
         });
-        
-        showSlide(0);
 
         // ===== 이미지 편집 및 저장 스크립트 =====
         const imageUpload = document.getElementById('imageUpload');
@@ -1085,7 +1082,7 @@
                         activeImageContainer.prepend(img);
                     }
                     img.src = e.target.result;
-                    img.style.width = '100%'; // 초기 너비 설정
+                    img.style.width = '100%';
                     img.style.height = 'auto';
                     
                     addResizeHandles(activeImageContainer);
@@ -1154,7 +1151,7 @@
                 }
             });
 
-            clonedDoc.getElementById('saveBtn').remove();
+            clonedDoc.querySelector('.nav').remove();
             clonedDoc.getElementById('imageUpload').remove();
             clonedDoc.querySelector('script').remove();
             clonedDoc.querySelectorAll('.resize-handle, .delete-btn, .slide-number').forEach(el => el.remove());
@@ -1182,6 +1179,23 @@
             URL.revokeObjectURL(a.href);
         }
         
+        // ===== 화면 클릭 네비게이션 =====
+        const presentationArea = document.querySelector('.presentation');
+        presentationArea.addEventListener('click', (e) => {
+            if (e.target.closest('[contenteditable="true"], .image-container, .nav, a')) {
+                return;
+            }
+
+            const clickX = e.clientX;
+            const screenWidth = window.innerWidth;
+
+            if (clickX < screenWidth / 2) {
+                changeSlide(-1);
+            } else {
+                nextStep();
+            }
+        });
+
         // 초기화
         setupImageContainers();
         showSlide(0);
