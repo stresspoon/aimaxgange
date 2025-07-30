@@ -1143,38 +1143,59 @@
         }
 
         function saveHTML() {
-            const clonedDoc = document.cloneNode(true);
+            // 1. 현재 문서의 복제본 만들기 (body만 복제)
+            const clonedBody = document.body.cloneNode(true);
 
-            clonedDoc.querySelectorAll('.image-container').forEach(container => {
-                if (container.style.display === 'none') {
-                    container.remove();
-                }
-            });
-
-            clonedDoc.querySelector('.nav').remove();
-            clonedDoc.getElementById('imageUpload').remove();
-            clonedDoc.querySelector('script').remove();
-            clonedDoc.querySelectorAll('.resize-handle, .delete-btn, .slide-number').forEach(el => el.remove());
-            clonedDoc.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            // 2. 편집 관련 UI 및 스크립트 제거
+            clonedBody.querySelector('.nav').remove();
+            clonedBody.querySelector('#imageUpload').remove();
+            clonedBody.querySelector('script').remove();
+            clonedBody.querySelectorAll('.resize-handle, .delete-btn, .slide-number').forEach(el => el.remove());
+            clonedBody.querySelectorAll('[contenteditable="true"]').forEach(el => {
                 el.removeAttribute('contenteditable');
                 el.style.outline = 'none';
+                el.style.cursor = 'default';
+            });
+             clonedBody.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
             });
 
+            // 3. 이미지 데이터를 Base64로 인라인 삽입
             const originalImages = document.querySelectorAll('.image-container img');
-            const clonedImages = clonedDoc.querySelectorAll('.image-container img');
+            const clonedImages = clonedBody.querySelectorAll('.image-container img');
             originalImages.forEach((img, i) => {
                 if (clonedImages[i]) {
-                    clonedImages[i].src = img.src;
+                    clonedImages[i].src = img.src; // base64 데이터 URL
                     clonedImages[i].style.width = img.style.width;
                     clonedImages[i].style.height = img.style.height;
                 }
             });
+            
+            // 4. 전체 HTML 구조 생성
+            const finalHtml = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIMAX 프레젠테이션 (저장본)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        ${document.querySelector('style').innerHTML}
+        /* 저장본 전용 스타일 */
+        body { overflow: auto; }
+        .presentation { display: block; height: auto; width: auto; }
+        .slide { display: flex !important; page-break-after: always; height: 100vh; }
+    </style>
+</head>
+${clonedBody.outerHTML}
+</html>`;
 
-            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // 5. 파일로 다운로드
+            const blob = new Blob([finalHtml], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = 'aimax-presentation-edited.html';
+            a.download = 'aimax-presentation-full.html';
             a.click();
             URL.revokeObjectURL(a.href);
         }
