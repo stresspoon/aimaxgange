@@ -102,6 +102,21 @@
         .nav button.save-btn {
             background: #007bff;
         }
+        .link-button {
+            background-color: #ff3d00;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .link-button:hover {
+            opacity: 0.9;
+        }
 
         /* 이미지 관련 스타일 */
         .image-container {
@@ -200,7 +215,7 @@
                 height: 100vh; /* 페이지 높이에 맞춤 */
                 width: 100%;
             }
-            .nav, .resize-handle, .delete-btn { 
+            .nav, .resize-handle, .delete-btn, .link-button { 
                 display: none !important; /* 네비게이션, 편집 버튼 인쇄 안 함 */
             }
             .image-placeholder, .small-image-placeholder {
@@ -256,9 +271,12 @@
                 <div class="content-left step" data-step="1">
                     <div contenteditable="true"><h3>오늘 알려드리는 내용만 따라하셔도</h3></div>
                     <ul>
-                        <li contenteditable="true"><div><span class="highlight">24시간 일하는 마케팅 직원 1명 고용</span><br>최소 월 200만원의 가치</div></li>
-                        <li contenteditable="true"><div><span class="highlight">월 200만원 아끼는 마케팅 자동화 시스템</span><br>마케팅 대행비 0원</div></li>
-                        <li contenteditable="true"><div><span class="highlight">업무시간 8시간 → 1시간</span><br>나머지 7시간은 여러분의 시간</div></li>
+                        <li contenteditable="true"><div><span class="highlight">24시간 일하는 마케팅 직원 1명 고용</span><br>
+                        최소 월 200만원의 가치</div></li>
+                        <li contenteditable="true"><div><span class="highlight">월 200만원 아끼는 마케팅 자동화 시스템</span><br>
+                        마케팅 대행비 0원</div></li>
+                        <li contenteditable="true"><div><span class="highlight">업무시간 8시간 → 1시간</span><br>
+                        나머지 7시간은 여러분의 시간</div></li>
                     </ul>
                 </div>
                 <div class="content-right">
@@ -298,7 +316,8 @@
             <div class="content-split">
                 <div class="content-left">
                     <div contenteditable="true"><div class="big-number">2</div></div>
-                    <div contenteditable="true"><h3>메이크패밀리가 실제로 쓰는<br>비즈니스 ChatGPT 프롬프트 30개</h3></div>
+                    <div contenteditable="true"><h3>메이크패밀리가 실제로 쓰는<br>
+                        비즈니스 ChatGPT 프롬프트 30개</h3></div>
                     <div contenteditable="true"><p>"AI한테 뭐라고 물어봐야 할지 모르겠어요"</p></div>
                     <ul>
                         <li contenteditable="true"><div>마케팅 프롬프트</div></li>
@@ -379,9 +398,12 @@
         <!-- Slide 7: 12단계 자동화 시스템 안내 -->
         <div class="slide center">
             <div contenteditable="true"><h1>메이크패밀리의 <span class="highlight">12단계 마케팅 자동화 시스템</span></h1></div>
-            <div contenteditable="true"><p style="font-size: 1.3em; margin-bottom: 40px;">눈치 빠른 분들은 이 프로세스 안에서도<br>인사이트를 많이 얻어가실 겁니다</p></div>
+            <div contenteditable="true"><p style="font-size: 1.3em; margin-bottom: 40px;">눈치 빠른 분들은 이 프로세스 안에서도<br>
+            인사이트를 많이 얻어가실 겁니다</p></div>
             <div class="step" data-step="1">
-                <div contenteditable="true"><h2>이 흐름만 보셔도<br>'아, 이래서 혼자서도 브랜드 20개를 운영할 수 있구나'<br>완벽하게 이해하실 겁니다</h2></div>
+                <div contenteditable="true"><h2>이 흐름만 보셔도<br>
+                    '아, 이래서 혼자서도 브랜드 20개를 운영할 수 있구나'<br>
+                    완벽하게 이해하실 겁니다</h2></div>
             </div>
         </div>
         
@@ -442,8 +464,9 @@
                 <div class="content-left">
                     <div class="automation-step step" data-step="1">
                         <div contenteditable="true"><h4>STEP 6: 고객 자동 모집</h4></div>
-                        <div contenteditable="true"><p><a href="https://threadsight.xyz" target="_blank">Threadsight</a>로 한 달치 예약 발행<br>
+                        <div contenteditable="true"><p>Threadsight로 한 달치 예약 발행<br>
                         <span class="highlight">30일 동안 알아서 고객 모집</span></p></div>
+                        <button onclick="window.open('https://threadsight.xyz', '_blank')" class="link-button">Threadsight 바로가기</button>
                     </div>
                     <div class="automation-step step" data-step="2">
                         <div contenteditable="true"><h4>STEP 7: 잠재고객 DB 구축</h4></div>
@@ -756,7 +779,8 @@
         <div class="slide center">
             <div class="week-badge">4주차</div>
             <div contenteditable="true"><h1>라이브 피드백 세션 <span class="live-badge">LIVE</span></h1></div>
-            <div contenteditable="true"><h2 style="margin-top: 40px;">1:1 맞춤 피드백으로<br>막힌 부분 완벽 해결!</h2></div>
+            <div contenteditable="true"><h2 style="margin-top: 40px;">1:1 맞춤 피드백으로<br>
+                막힌 부분 완벽 해결!</h2></div>
             <div class="step" data-step="1">
                 <div contenteditable="true"><p style="font-size: 1.3em; margin-top: 50px;">
                 3주 동안 진행한 미션 리뷰<br>
@@ -854,7 +878,8 @@
         <div class="slide center">
             <div class="week-badge">8주차</div>
             <div contenteditable="true"><h1>최종 라이브 피드백 & 멤버십 <span class="live-badge">LIVE</span></h1></div>
-            <div contenteditable="true"><h2 style="margin-top: 40px;">8주간의 여정 마무리<br>& 지속 성장 전략!</h2></div>
+            <div contenteditable="true"><h2 style="margin-top: 40px;">8주간의 여정 마무리<br>
+                & 지속 성장 전략!</h2></div>
             <div class="step" data-step="1">
                 <div contenteditable="true"><p style="font-size: 1.3em; margin-top: 50px;">
                 전체 시스템 최종 점검<br>
@@ -947,7 +972,8 @@
                 </div>
                 <div class="vs-divider step" data-step="2">VS</div>
                 <div class="vs-item step" data-step="3">
-                    <div contenteditable="true"><h2 style="color: #ff3d00;">AI에게 일 시키고<br>사업 키우기</h2></div>
+                    <div contenteditable="true"><h2 style="color: #ff3d00;">AI에게 일 시키고<br>
+                        사업 키우기</h2></div>
                     <div class="image-container">
                         <div class="small-image-placeholder">[자동화된 비즈니스 이미지]</div>
                     </div>
@@ -1143,67 +1169,33 @@
         }
 
         function saveHTML() {
-            // 1. 현재 문서의 복제본 만들기 (body만 복제)
-            const clonedBody = document.body.cloneNode(true);
+            // 1. Create a deep clone of the entire document's root element
+            const clonedHtml = document.documentElement.cloneNode(true);
 
-            // 2. 편집 관련 UI 및 스크립트 제거
-            clonedBody.querySelector('.nav').remove();
-            clonedBody.querySelector('#imageUpload').remove();
-            clonedBody.querySelector('script').remove();
-            clonedBody.querySelectorAll('.resize-handle, .delete-btn, .slide-number').forEach(el => el.remove());
-            clonedBody.querySelectorAll('[contenteditable="true"]').forEach(el => {
-                el.removeAttribute('contenteditable');
-                el.style.outline = 'none';
-                el.style.cursor = 'default';
-            });
-             clonedBody.querySelectorAll('.slide').forEach(slide => {
-                slide.classList.remove('active');
-            });
+            // 2. Remove the save button from the cloned document
+            const saveBtnInClone = clonedHtml.querySelector('#saveBtn');
+            if (saveBtnInClone) {
+                saveBtnInClone.remove();
+            }
 
-            // 3. 이미지 데이터를 Base64로 인라인 삽입
-            const originalImages = document.querySelectorAll('.image-container img');
-            const clonedImages = clonedBody.querySelectorAll('.image-container img');
-            originalImages.forEach((img, i) => {
-                if (clonedImages[i]) {
-                    clonedImages[i].src = img.src; // base64 데이터 URL
-                    clonedImages[i].style.width = img.style.width;
-                    clonedImages[i].style.height = img.style.height;
-                }
-            });
-            
-            // 4. 전체 HTML 구조 생성
-            const finalHtml = `<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIMAX 프레젠테이션 (저장본)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        ${document.querySelector('style').innerHTML}
-        /* 저장본 전용 스타일 */
-        body { overflow: auto; }
-        .presentation { display: block; height: auto; width: auto; }
-        .slide { display: flex !important; page-break-after: always; height: 100vh; }
-    </style>
-</head>
-${clonedBody.outerHTML}
-</html>`;
+            // 3. Get the outer HTML of the modified clone
+            const finalHtml = '<!DOCTYPE html>\n' + clonedHtml.outerHTML;
 
-
-            // 5. 파일로 다운로드
+            // 4. Create a Blob and trigger the download
             const blob = new Blob([finalHtml], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = 'aimax-presentation-full.html';
+            a.download = 'aimax-presentation-interactive.html';
+            document.body.appendChild(a); // Append for cross-browser compatibility
             a.click();
+            document.body.removeChild(a); // Clean up
             URL.revokeObjectURL(a.href);
         }
         
         // ===== 화면 클릭 네비게이션 =====
         const presentationArea = document.querySelector('.presentation');
         presentationArea.addEventListener('click', (e) => {
-            if (e.target.closest('[contenteditable="true"], .image-container, .nav, a')) {
+            if (e.target.closest('[contenteditable="true"], .image-container, .nav, a, .link-button')) {
                 return;
             }
 
