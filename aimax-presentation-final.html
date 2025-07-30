@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIMAX 1시간 리드마그넷 강의</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f2f1ed;
+            color: #131313;
+            overflow: hidden;
+            font-size: 20px;
+        }
+        
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            max-height: 675px;
+            display: none;
+            flex-direction: column;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        .slide.center {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.3;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ff3d00;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        p, li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            list-style: none;
+            text-align: left;
+            width: 100%;
+        }
+        
+        li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ff3d00;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            color: #ff3d00;
+            font-weight: 700;
+        }
+        
+        .button {
+            background: #131313;
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 25px;
+            transition: transform 0.2s;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .nav button {
+            background: #131313;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .big-number {
+            font-size: 3em;
+            color: #ff3d00;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .comparison {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .comparison-item {
+            flex: 1;
+            max-width: 350px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-item h4 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ff3d00;
+            margin: 15px 0;
+        }
+        
+        .content-split {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            width: 100%;
+            flex: 1;
+        }
+        
+        .content-left {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .content-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            background: #ddd;
+            border: 2px dashed #999;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .step.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .application-count {
+            font-size: 2em;
+            font-weight: 700;
+            color: #ff3d00;
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: inline-block;
+        }
+        
+        .application-count span {
+            font-size: 1.5em;
+            color: #131313;
+        }
+        
+        .automation-step {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .automation-step h4 {
+            color: #ff3d00;
+            margin-bottom: 10px;
+        }
+        
+        .small-image-placeholder {
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            background: #ddd;
+            border: 2px dashed #999;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            color: #666;
+            font-size: 0.8em;
+        }
+        
+        .vs-section {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .vs-item {
+            text-align: center;
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .vs-divider {
+            font-size: 3em;
+            font-weight: 700;
+            color: #ff3d00;
+        }
+        
+        .prompt-example {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.95em;
+        }
+        
+        .week-badge {
+            display: inline-block;
+            background: #ff3d00;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .mission-box {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .live-badge {
+            display: inline-block;
+            background: #ff0000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active center">
+            <h1>AIMAX</h1>
+            <h2>AI로 마케팅을 자동화하는 방법</h2>
+            <p>24시간 일하는 마케팅 시스템을 만드세요</p>
+        </div>
+        
+        <!-- Slide 2-1: 솔직한 시작 - 줄 수 없는 것 -->
+        <div class="slide">
+            <h1>솔직하게 말씀드립니다</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>저는 여러분께 줄 수 없는 것:</h3>
+                    <ul>
+                        <li>돈, 명예, 자유</li>
+                        <li>한 달 만에 억대 매출</li>
+                        <li>노력 없는 성공</li>
+                    </ul>
+                    <p style="margin-top: 30px;">다른 강의들이 이런 걸 약속한다면,<br>
+                    저는 정반대로 가겠습니다.</p>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [거짓 약속 이미지]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2-2: 솔직한 시작 - 확실히 드릴 수 있는 것 -->
+        <div class="slide">
+            <h1>대신 확실히 드릴 수 있는 것</h1>
+            <div class="content-split">
+                <div class="content-left step" data-step="1">
+                    <h3>오늘 알려드리는 내용만 따라하셔도</h3>
+                    <ul>
+                        <li><span class="highlight">24시간 일하는 마케팅 직원 1명 고용</span><br>최소 월 200만원의 가치</li>
+                        <li><span class="highlight">월 200만원 아끼는 마케팅 자동화 시스템</span><br>마케팅 대행비 0원</li>
+                        <li><span class="highlight">업무시간 8시간 → 1시간</span><br>나머지 7시간은 여러분의 시간</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [가능한 혜택 이미지]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3-1: 첫 번째 선물 -->
+        <div class="slide">
+            <h1>오늘의 <span class="highlight">2가지 선물</span></h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="big-number">1</div>
+                    <h3>AI 비즈니스 글쓰기 완전정복 프로세스</h3>
+                    <p>PDF 가이드북</p>
+                    <ul>
+                        <li>정보성 글 템플릿</li>
+                        <li>판매 글 템플릿</li>
+                        <li>마케팅 모집글 템플릿</li>
+                    </ul>
+                    <p style="margin-top: 20px;">그냥 복사해서 쓰시면 됩니다</p>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [PDF 가이드북 표지 이미지]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3-2: 두 번째 선물 -->
+        <div class="slide">
+            <h1>오늘의 <span class="highlight">2가지 선물</span></h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="big-number">2</div>
+                    <h3>메이크패밀리가 실제로 쓰는<br>비즈니스 ChatGPT 프롬프트 30개</h3>
+                    <p>"AI한테 뭐라고 물어봐야 할지 모르겠어요"</p>
+                    <ul>
+                        <li>마케팅 프롬프트</li>
+                        <li>고객 관리 프롬프트</li>
+                        <li>상품 기획 프롬프트</li>
+                    </ul>
+                    <p style="margin-top: 20px;">이것만 있으면 ChatGPT 초보도 바로 프로</p>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [프롬프트 모음 이미지]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: 3년 전의 메이크패밀리 -->
+        <div class="slide">
+            <h1>3년 전의 메이크패밀리</h1>
+            <div class="content-split">
+                <div class="content-left step" data-step="1">
+                    <h3><span class="highlight">직원 20명</span>이 브랜드 <span class="highlight">5개</span> 운영</h3>
+                    <p>하루 일과:</p>
+                    <ul>
+                        <li>아침 9시: 기획 회의 <span class="highlight">(2시간)</span></li>
+                        <li>오전: 글 하나 쓰고, 사진 찍고 <span class="highlight">(3시간)</span></li>
+                        <li>오후: 발행하고, 댓글 확인하고 <span class="highlight">(3시간)</span></li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [과거 메이크패밀리 팀 사진]
+                    </div>
+                </div>
+            </div>
+            <div class="step" data-step="2" style="text-align: center; margin-top: 30px;">
+                <h2>콘텐츠 1개 = 하루 종일</h2>
+                <p>20명이서 일주일에 겨우 5개 제작</p>
+            </div>
+        </div>
+        
+        <!-- Slide 5: 지금의 메이크패밀리 -->
+        <div class="slide">
+            <h1>지금의 메이크패밀리</h1>
+            <div class="content-split">
+                <div class="content-left step" data-step="1">
+                    <h3><span class="highlight">직원 1명</span>이 브랜드 <span class="highlight">20개</span> 운영</h3>
+                    <p>하루 성과:</p>
+                    <ul>
+                        <li>콘텐츠 80~100개 발행</li>
+                        <li>일주일 400~1000개 발행</li>
+                        <li>스레드, 블로그, 인스타 모두 자동화</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [자동화 대시보드 이미지]
+                    </div>
+                </div>
+            </div>
+            <div class="step" data-step="2" style="text-align: center; margin-top: 30px;">
+                <h2>"AI가 아무리 발전해도... 이게 진짜 가능한가?"</h2>
+                <p style="font-size: 1.3em; color: #ff3d00;">지금부터 직접 보여드리겠습니다</p>
+            </div>
+        </div>
+        
+        <!-- Slide 6: 변화의 시작 -->
+        <div class="slide center">
+            <h1>무엇이 달라졌을까?</h1>
+            <h2>마케팅 자동화의 힘</h2>
+            <p style="font-size: 1.3em;">예전엔 사람이 하나하나 했던 모든 일을<br>
+            이제는 AI와 시스템이 대신합니다</p>
+            <div class="image-placeholder" style="margin-top: 30px;">
+                [Before/After 비교 이미지]
+            </div>
+        </div>
+        
+        <!-- Slide 7: 12단계 자동화 시스템 안내 -->
+        <div class="slide center">
+            <h1>메이크패밀리의 <span class="highlight">12단계 마케팅 자동화 시스템</span></h1>
+            <p style="font-size: 1.3em; margin-bottom: 40px;">눈치 빠른 분들은 이 프로세스 안에서도<br>인사이트를 많이 얻어가실 겁니다</p>
+            <div class="step" data-step="1">
+                <h2>이 흐름만 보셔도<br>'아, 이래서 혼자서도 브랜드 20개를 운영할 수 있구나'<br>완벽하게 이해하실 겁니다</h2>
+            </div>
+        </div>
+        
+        <!-- Slide 8: STEP 1-2 브랜드 기획 자동화 (설명만) -->
+        <div class="slide">
+            <h1>STEP 1-2: 브랜드 기획 & 글쓰기 자동화</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="automation-step step" data-step="1">
+                        <h4>STEP 1: 브랜드 기획 자동화</h4>
+                        <p>기존: 7일~한 달 소요<br>
+                        <span class="highlight">AI 활용: 5분 완성</span></p>
+                        <p style="margin-top: 10px;">ChatGPT 음성 입력으로 그냥 말만 하면 끝!</p>
+                    </div>
+                    <div class="automation-step step" data-step="2">
+                        <h4>STEP 2: 글쓰기 자동화</h4>
+                        <p>"정보성 1개, 판매용  스레드 글 3개써줘"</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [프로세스 다이어그램]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: STEP 3-5 콘텐츠 확장 -->
+        <div class="slide">
+            <h1>STEP 3-5: 콘텐츠 무한 확장</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="automation-step step" data-step="1">
+                        <h4>STEP 3: 스레드 → 블로그 변환</h4>
+                        <p>300자가 2,000자로 자동 확장</p>
+                    </div>
+                    <div class="automation-step step" data-step="2">
+                        <h4>STEP 4: 영상 대본 자동 생성</h4>
+                        <p>글 하나로 영상 스크립트까지</p>
+                    </div>
+                    <div class="automation-step step" data-step="3">
+                        <h4>STEP 5: 영상 촬영 및 편집</h4>
+                        <p>한 번의 기획으로 모든 채널 커버</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [콘텐츠 확장 예시]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 10: STEP 6-8 마케팅 자동화 -->
+        <div class="slide">
+            <h1>STEP 6-8: 마케팅 자동화</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="automation-step step" data-step="1">
+                        <h4>STEP 6: 고객 자동 모집</h4>
+                        <p><a href="https://threadsight.xyz" target="_blank">Threadsight</a>로 한 달치 예약 발행<br>
+                        <span class="highlight">30일 동안 알아서 고객 모집</span></p>
+                    </div>
+                    <div class="automation-step step" data-step="2">
+                        <h4>STEP 7: 잠재고객 DB 구축</h4>
+                        <p>브랜드당 주 100명 × 20개 = <span class="highlight">2,000명</span></p>
+                    </div>
+                    <div class="automation-step step" data-step="3">
+                        <h4>STEP 8: 자동 선정</h4>
+                        <p>조건 체크, 적합성 판단 전부 자동<br>
+                        <strong>마케팅 대행비: 월 200만원 → 0원</strong></p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [구글시트 DB 화면]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: STEP 9-10 수익화 자동화 -->
+        <div class="slide">
+            <h1>STEP 9-10: 미당첨자도 수익화</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="automation-step step" data-step="1">
+                        <h4>STEP 9: 미당첨자 수익 전환</h4>
+                        <p>미당첨자는 버리나요? <span class="highlight">아닙니다!</span><br>
+                        할인 링크 자동 발송 → 매출 전환</p>
+                        <p style="margin-top: 10px;">일반 마케팅 대행사와의 차이점<br>
+                        잠재고객 DB를 100% 활용</p>
+                    </div>
+                    <div class="automation-step step" data-step="2">
+                        <h4>STEP 10: 당첨자 메일 자동 발송</h4>
+                        <p>선정 즉시 당첨 메일 자동화</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [메일 자동화 화면]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: STEP 11-12 무한 순환 -->
+        <div class="slide">
+            <h1>STEP 11-12: 무한 순환 시스템</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <div class="automation-step step" data-step="1">
+                        <h4>STEP 11: 리뷰 재활용</h4>
+                        <p>고객 리뷰에서 이미지 자동 추출<br>
+                        리뷰 → 새로운 콘텐츠로 재생산</p>
+                    </div>
+                    <div class="automation-step step" data-step="2">
+                        <h4>STEP 12: 무한 순환 구조</h4>
+                        <p><span class="highlight">콘텐츠 → 고객 모집 → 리뷰 → 다시 콘텐츠</span><br>
+                        24시간 자동으로 돌아가는 시스템</p>
+                        <p style="margin-top: 10px;">한 번 세팅해놓으면<br>
+                        밖에 나가있어도, 잠을 자도 계속 돌아갑니다</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [순환 구조 다이어그램]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: 경제적 효과 -->
+        <div class="slide center">
+            <h1>이 모든 걸 ChatGPT 월 3만원으로</h1>
+            <div class="step" data-step="1">
+                <p style="font-size: 1.3em;">매달 <span class="highlight">400만원 이상</span>의 경제적 이득</p>
+            </div>
+            <div class="step" data-step="2" style="margin-top: 40px;">
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <h4>절감 비용</h4>
+                        <p>직원 인건비: 200만원</p>
+                        <p>마케팅 대행비: 200만원</p>
+                        <div class="price">월 400만원 절감</div>
+                    </div>
+                </div>
+            </div>
+            <div class="image-placeholder" style="margin-top: 30px;">
+                [매출 증빙 화면]
+            </div>
+        </div>
+        
+        <!-- Slide 14: AI 시연 안내 -->
+        <div class="slide center">
+            <h1>이렇게만 말하면 어렵죠?</h1>
+            <h2 style="margin-top: 40px;">지금부터 30분 동안</h2>
+            <p style="font-size: 1.5em; margin-top: 30px;">여러분도 따라할 수 있게<br>
+            <span class="highlight">AI 활용법을 직접 보여드리겠습니다</span></p>
+            <div class="step" data-step="1" style="margin-top: 50px;">
+                <p style="font-size: 1.2em;">음성으로 기획 → 프로젝트로 글쓰기 → 자동화 연결</p>
+            </div>
+        </div>
+        
+        <!-- Slide 15: AI 시연 - 음성 기획 -->
+        <div class="slide">
+            <h1>AI 시연 1: 음성으로 브랜드 기획하기</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>프롬프트 짜느라 머리 아프신가요?</h3>
+                    <div class="step" data-step="1">
+                        <p><strong>그냥 말만 하세요!</strong></p>
+                        <div class="prompt-example">
+                        🎤 "오늘 새로운 수분앰플 브랜드를 기획해야 하는데,<br>
+                        20대 후반 여성들이 타겟이고, 가격대는 3만원대고..."
+                        </div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <p><strong>AI가 알아서 정리합니다:</strong></p>
+                        <ul>
+                            <li>브랜드명 자동 생성</li>
+                            <li>컨셉 및 타겟 설정</li>
+                            <li>마케팅 전략 수립</li>
+                        </ul>
+                        <p style="margin-top: 20px;">소요 시간: <span class="highlight">5분</span></p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [음성 입력 시연 화면]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 16: AI 시연 - 프로젝트 -->
+        <div class="slide">
+            <h1>AI 시연 2: 프로젝트로 콘텐츠 생성</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>프로젝트 = 나만의 AI 직원</h3>
+                    <div class="step" data-step="1">
+                        <p><strong>한 번만 세팅하면 끝!</strong></p>
+                        <p>브랜드 정보, 톤앤매너 저장</p>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="prompt-example">
+                        "마케팅용 스레드 글 3개 써줘"
+                        </div>
+                        <p style="margin-top: 10px;">→ 톤앤매너 완벽 반영된 글 즉시 생성</p>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="prompt-example">
+                        "이 중에 2번을 블로그 글로 확장해줘"
+                        </div>
+                        <p style="margin-top: 10px;">→ 300자가 3,000자로 확장</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [프로젝트 실행 화면]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 17: AI 시연 - 자동화 -->
+        <div class="slide">
+            <h1>AI 시연 3: 완전 자동화 연결</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>마케팅 자동화 프로세스</h3>
+                    <div class="step" data-step="1">
+                        <p><strong>1. 스레드 예약 발행</strong><br>
+                        스레드 사이트로 한 달치 예약</p>
+                    </div>
+                    <div class="step" data-step="2">
+                        <p><strong>2. 고객 자동 모집</strong><br>
+                        구글폼으로 신청자 자동 수집</p>
+                    </div>
+                    <div class="step" data-step="3">
+                        <p><strong>3. 자동 선정 & 메일 발송</strong><br>
+                        Make.com으로 완전 자동화</p>
+                    </div>
+                    <div class="step" data-step="4">
+                        <p style="margin-top: 30px; font-size: 1.2em;">
+                        <strong>결과:</strong> 직원 2명 이상의 효과</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [자동화 시스템 화면]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 호기심 전환 -->
+        <div class="slide center">
+            <h1>지금까지 보신 것들을</h1>
+            <div class="step" data-step="1">
+                <h2 style="margin-top: 50px;">직접 해보고 싶으신가요?</h2>
+            </div>
+            <div class="step" data-step="2">
+                <p style="font-size: 1.5em; margin-top: 50px;">
+                아니면...<br><br>
+                <span class="highlight">"나도 이렇게 하려면 어떻게 해야 할까?"</span><br><br>
+                궁금하신가요?
+                </p>
+            </div>
+            <div class="step" data-step="3">
+                <h3 style="margin-top: 50px;">그래서 준비했습니다</h3>
+            </div>
+        </div>
+        
+        <!-- Slide 19: 8주 커리큘럼 소개 -->
+        <div class="slide center">
+            <h1>8주 완성 커리큘럼</h1>
+            <div class="step" data-step="1">
+                <h2>강의만 보는 게 아닙니다</h2>
+                <p style="font-size: 1.3em; margin-top: 30px;">
+                매주 미션이 있어서<br>
+                <span class="highlight">무조건 따라하기만 하면</span><br>
+                여러분 비즈니스에 바로 써먹을 수 있습니다
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 20: 1주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">1주차</div>
+            <h1>챗GPT 초보 탈출!</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"어? 이렇게 쉬운 거였어?"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>AI 기본 개념 설명 (왕초보 대상)</li>
+                        <li>ChatGPT 인터페이스 완전 정복</li>
+                        <li>'나의 비즈니스 찾아줘' GPTs 활용</li>
+                        <li>다른 게시물 분석하는 법</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [1주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>1주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 21: 2주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">2주차</div>
+            <h1>글쓰기 시간 50% 단축</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"3시간 걸리던 글이 30분만에?"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>원래 글쓰기 시간 소모 분석</li>
+                        <li>AI 초안 생성 → 디벨롭 방법</li>
+                        <li>다른 글 분석해 본인 콘텐츠화하기</li>
+                        <li>톤앤매너 일관성 유지법</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [2주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>2주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 22: 3주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">3주차</div>
+            <h1>GPTs로 직원 고용하기</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"24시간 일하는 AI 직원이 생겼어요!"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>이전 대화 기반 GPTs 제작</li>
+                        <li>프롬프트 디벨롭 (AI 대화)</li>
+                        <li>블로그/스레드 업로드 팁</li>
+                        <li>SEO 키워드 기본 (저품질 피하고 상위노출)</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [3주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>3주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 23: 4주차 커리큘럼 -->
+        <div class="slide center">
+            <div class="week-badge">4주차</div>
+            <h1>라이브 피드백 세션 <span class="live-badge">LIVE</span></h1>
+            <h2 style="margin-top: 40px;">1:1 맞춤 피드백으로<br>막힌 부분 완벽 해결!</h2>
+            <div class="step" data-step="1">
+                <p style="font-size: 1.3em; margin-top: 50px;">
+                3주 동안 진행한 미션 리뷰<br>
+                개인별 맞춤 솔루션 제공<br>
+                실시간 Q&A
+                </p>
+            </div>
+            <div class="image-placeholder" style="margin-top: 30px;">
+                [라이브 세션 화면]
+            </div>
+        </div>
+        
+        <!-- Slide 24: 5주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">5주차</div>
+            <h1>이미지 무한 생성</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"디자이너 부럽지 않아요!"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>무료 도구 비교 (Whisk, ImageFX, Reve AI, GPT-4o)</li>
+                        <li>효과적인 프롬프트 작성법</li>
+                        <li>콘텐츠에 자연스러운 이미지 넣기</li>
+                        <li>상품 이미지 자동 생성</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [5주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>5주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 25: 6주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">6주차</div>
+            <h1>스크립트 자동화</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"영상 대본도 AI가?"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>글 기반 스크립트 변환</li>
+                        <li>GPTs/NotebookLM 활용 자동화</li>
+                        <li>이미지 → 영상 변환 (자동화 초안)</li>
+                        <li>채널별 최적화 방법</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [6주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>6주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 26: 7주차 커리큘럼 -->
+        <div class="slide">
+            <div class="week-badge">7주차</div>
+            <h1>완전 자동화 시스템</h1>
+            <h2 style="text-align: center; margin-bottom: 40px;">"이제 시간이 남아요!"</h2>
+            <div class="content-split">
+                <div class="content-left">
+                    <h3>학습목표</h3>
+                    <ul>
+                        <li>네이버 블로그 자동화 데모</li>
+                        <li>AIMAX 프로그램 활용법</li>
+                        <li>AI 한계 극복 방법</li>
+                        <li>평생 활용 가능한 AI 꿀팁</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [7주차 학습 화면]
+                    </div>
+                </div>
+            </div>
+            <div class="mission-box">
+                <h3>7주차 미션</h3>
+                <p>수강생 방에 별도 공개</p>
+            </div>
+        </div>
+        
+        <!-- Slide 27: 8주차 커리큘럼 -->
+        <div class="slide center">
+            <div class="week-badge">8주차</div>
+            <h1>최종 라이브 피드백 & 멤버십 <span class="live-badge">LIVE</span></h1>
+            <h2 style="margin-top: 40px;">8주간의 여정 마무리<br>& 지속 성장 전략!</h2>
+            <div class="step" data-step="1">
+                <p style="font-size: 1.3em; margin-top: 50px;">
+                전체 시스템 최종 점검<br>
+                개인별 성장 로드맵 제시<br>
+                멤버십 커뮤니티 안내
+                </p>
+            </div>
+            <div class="image-placeholder" style="margin-top: 30px;">
+                [최종 라이브 화면]
+            </div>
+        </div>
+        
+        <!-- Slide 28: 투자 대비 효과 -->
+        <div class="slide center">
+            <h1>투자 대비 효과</h1>
+            <div class="comparison step" data-step="1">
+                <div class="comparison-item">
+                    <h4>일반적인 비용</h4>
+                    <p>마케팅 대행: 월 200만원</p>
+                    <p>직원 고용: 월 200만원</p>
+                    <p style="font-weight: bold;">연간 합계:</p>
+                    <div class="price">4,800만원</div>
+                </div>
+                <div class="comparison-item">
+                    <h4>AIMAX</h4>
+                    <p>8주 과정</p>
+                    <p>평생 사용 가능</p>
+                    <p style="font-weight: bold;">단 한 번:</p>
+                    <div class="price">20만원</div>
+                </div>
+            </div>
+            <div class="step" data-step="2" style="margin-top: 40px;">
+                <h2>차이: <span class="highlight">4,780만원</span></h2>
+                <p>더 중요한 건, 평생 쓸 수 있는 스킬을 배운다는 거죠</p>
+            </div>
+        </div>
+        
+        <!-- Slide 29: 8주차 수료 혜택 -->
+        <div class="slide">
+            <h1>8주차 수료 시 제공</h1>
+            <div class="content-split">
+                <div class="content-left">
+                    <ul>
+                        <li><span class="highlight">마케팅 자동화 프로그램 패키지</span><br>
+                        300만원 상당</li>
+                        <li><span class="highlight">1:1 AI 맞춤 컨설팅 3명</span><br>
+                        선착순 (100만원 상당)</li>
+                        <li><span class="highlight">프롬프트 템플릿 100개</span><br>
+                        즉시 사용 가능</li>
+                        <li><span class="highlight">GPTs 제작 가이드북</span><br>
+                        단계별 상세 설명</li>
+                        <li><span class="highlight">월간 오프라인 모임 초대권</span><br>
+                        스마트스토어 대표님들, 수출 대표님들과 네트워킹</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-placeholder">
+                        [혜택 패키지 이미지]
+                    </div>
+                </div>
+            </div>
+            <h2 style="text-align: center; margin-top: 30px;">투자: 단 <span class="highlight">20만원</span></h2>
+        </div>
+        
+        <!-- Slide 30: 인터뷰 소개 -->
+        <div class="slide center">
+            <h1>아직도 미심쩍으신가요?</h1>
+            <div class="step" data-step="1">
+                <p style="font-size: 1.3em; margin-top: 50px;">
+                그래서 특별히 모셨습니다
+                </p>
+            </div>
+            <div class="step" data-step="2">
+                <h2 style="margin-top: 50px;">
+                이 모든 과정을 오늘도 직접 하고 있는<br>
+                <span class="highlight">메이크패밀리의 상철님</span>
+                </h2>
+            </div>
+        </div>
+        
+        <!-- Slide 31: 두 가지 길 -->
+        <div class="slide center">
+            <h1>두 가지 길</h1>
+            <div class="vs-section">
+                <div class="vs-item step" data-step="1">
+                    <h2>계속 하루 10시간씩 노가다</h2>
+                    <div class="small-image-placeholder">
+                        [수동 작업 이미지]
+                    </div>
+                </div>
+                <div class="vs-divider step" data-step="2">VS</div>
+                <div class="vs-item step" data-step="3">
+                    <h2 style="color: #ff3d00;">AI에게 일 시키고<br>사업 키우기</h2>
+                    <div class="small-image-placeholder">
+                        [자동화된 비즈니스 이미지]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 32: 마지막 CTA -->
+        <div class="slide center">
+            <h1>신청 기간: <span class="highlight">8월 3일까지</span></h1>
+            <div class="step" data-step="1">
+                <p style="font-size: 1.3em; margin-top: 30px;">
+                8월 4일부터 바로 시작합니다
+                </p>
+                <ul style="text-align: left; max-width: 600px; margin: 30px auto;">
+                    <li>단톡방 초대</li>
+                    <li>온라인 강의 진행</li>
+                    <li>매달 오프라인 모임</li>
+                </ul>
+            </div>
+            <div class="step" data-step="2">
+                <p style="margin-top: 30px; font-size: 1.2em;">
+                화면의 링크를 클릭하세요<br>
+                댓글에도 링크 남겨드렸습니다
+                </p>
+            </div>
+            <div class="step" data-step="3">
+                <p style="margin-top: 30px;">
+                약속드린 2가지 선물<br>
+                8월 4일에 전달드립니다
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 33: Q&A -->
+        <div class="slide center">
+            <h1>Q&A 시간</h1>
+            <h2 style="margin-top: 50px;">질문 끝날 때까지 받겠습니다</h2>
+            <p style="font-size: 1.3em; margin-top: 30px;">
+            상철님도 함께 답변해 주실 거예요
+            </p>
+            <div class="image-placeholder" style="margin-top: 50px;">
+                [Q&A 진행 화면]
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <button id="prevBtn" onclick="changeSlide(-1)">이전</button>
+        <button id="nextBtn" onclick="nextStep()">다음</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        let currentStep = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Add slide number
+            const slideNum = slides[currentSlide].querySelector('.slide-number');
+            if (slideNum) {
+                slideNum.remove();
+            }
+            const newSlideNum = document.createElement('div');
+            newSlideNum.className = 'slide-number';
+            newSlideNum.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            slides[currentSlide].appendChild(newSlideNum);
+            
+            // Reset steps
+            currentStep = 0;
+            const steps = slides[currentSlide].querySelectorAll('.step');
+            steps.forEach(step => step.classList.remove('show'));
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            
+            // Auto show first step
+            if (steps.length > 0) {
+                setTimeout(() => {
+                    steps[0].classList.add('show');
+                    currentStep = 1;
+                }, 100);
+            }
+        }
+        
+        function nextStep() {
+            const steps = slides[currentSlide].querySelectorAll('.step');
+            
+            if (currentStep < steps.length) {
+                // Handle steps
+                steps[currentStep].classList.add('show');
+                currentStep++;
+            } else {
+                // Move to next slide
+                changeSlide(1);
+            }
+        }
+        
+        function changeSlide(direction) {
+            if (direction === -1 && currentSlide === 0) return;
+            if (direction === 1 && currentSlide === totalSlides - 1) return;
+            showSlide(currentSlide + direction);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextStep();
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
