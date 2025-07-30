@@ -147,6 +147,27 @@
             right: -5px;
             cursor: se-resize;
         }
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 20px;
+            text-align: center;
+            z-index: 10;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        .image-container:hover .delete-btn {
+            opacity: 1;
+        }
 
 
         /* 기타 컴포넌트 스타일 */
@@ -176,8 +197,8 @@
                 height: 100vh; /* 페이지 높이에 맞춤 */
                 width: 100%;
             }
-            .nav, .resize-handle { 
-                display: none !important; /* 네비게이션, 리사이즈 핸들 인쇄 안 함 */
+            .nav, .resize-handle, .delete-btn { 
+                display: none !important; /* 네비게이션, 편집 버튼 인쇄 안 함 */
             }
             .image-placeholder, .small-image-placeholder {
                 -webkit-print-color-adjust: exact; /* 배경색 인쇄 강제 (크롬) */
@@ -1009,6 +1030,9 @@
                     currentStep = 1;
                 }, 100);
             }
+            
+            // 이미지 삭제 버튼 추가
+            addDeleteButtons();
         }
         
         function nextStep() {
@@ -1038,13 +1062,15 @@
         const imageUpload = document.getElementById('imageUpload');
         let activeImageContainer = null;
 
-        document.querySelectorAll('.image-container').forEach(container => {
-            container.addEventListener('click', (e) => {
-                if (e.target.tagName === 'IMG' || e.target.classList.contains('resize-handle')) return;
-                activeImageContainer = container;
-                imageUpload.click();
+        function setupImageContainers() {
+            document.querySelectorAll('.image-container').forEach(container => {
+                container.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'IMG' || e.target.classList.contains('resize-handle') || e.target.classList.contains('delete-btn')) return;
+                    activeImageContainer = container;
+                    imageUpload.click();
+                });
             });
-        });
+        }
 
         imageUpload.addEventListener('change', (event) => {
             if (event.target.files && event.target.files[0] && activeImageContainer) {
@@ -1095,7 +1121,6 @@
             function doDrag(e) {
                 e.stopPropagation();
                 const newWidth = startWidth + (e.clientX - startX);
-                // 비율 유지를 위해 높이는 자동으로 조정되도록 width만 변경
                 img.style.width = newWidth + 'px';
                 img.style.height = 'auto';
             }
@@ -1105,33 +1130,49 @@
                 document.documentElement.removeEventListener('mouseup', stopDrag, false);
             }
         }
+        
+        function addDeleteButtons() {
+            document.querySelectorAll('.image-container').forEach(container => {
+                if (container.querySelector('.delete-btn')) return;
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    container.remove();
+                };
+                container.appendChild(deleteBtn);
+            });
+        }
 
         function saveHTML() {
-            // 1. 현재 문서의 복제본 만들기
             const clonedDoc = document.cloneNode(true);
 
-            // 2. 편집 관련 UI 및 스크립트 제거
+            clonedDoc.querySelectorAll('.image-container').forEach(container => {
+                if (container.style.display === 'none') {
+                    container.remove();
+                }
+            });
+
             clonedDoc.getElementById('saveBtn').remove();
             clonedDoc.getElementById('imageUpload').remove();
-            clonedDoc.querySelector('script').remove(); // 마지막 스크립트 태그 제거
-            clonedDoc.querySelectorAll('.resize-handle').forEach(h => h.remove());
+            clonedDoc.querySelector('script').remove();
+            clonedDoc.querySelectorAll('.resize-handle, .delete-btn, .slide-number').forEach(el => el.remove());
             clonedDoc.querySelectorAll('[contenteditable="true"]').forEach(el => {
                 el.removeAttribute('contenteditable');
                 el.style.outline = 'none';
             });
 
-            // 3. 이미지 데이터를 Base64로 인라인 삽입
             const originalImages = document.querySelectorAll('.image-container img');
             const clonedImages = clonedDoc.querySelectorAll('.image-container img');
             originalImages.forEach((img, i) => {
                 if (clonedImages[i]) {
-                    clonedImages[i].src = img.src; // base64 데이터 URL
+                    clonedImages[i].src = img.src;
                     clonedImages[i].style.width = img.style.width;
                     clonedImages[i].style.height = img.style.height;
                 }
             });
 
-            // 4. 파일로 다운로드
             const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html' });
             const a = document.createElement('a');
@@ -1140,6 +1181,10 @@
             a.click();
             URL.revokeObjectURL(a.href);
         }
+        
+        // 초기화
+        setupImageContainers();
+        showSlide(0);
 
     </script>
 </body>
